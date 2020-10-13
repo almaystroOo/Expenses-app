@@ -32,22 +32,23 @@ class _NewTransactionState extends State<NewTransaction> {
     return Container(
       child: Card(
         child: Container(
+          margin: EdgeInsets.only(left: 10.0),
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextField(
                 controller: titleController,
                 onSubmitted: (_) => onSubmitied(),
                 decoration: InputDecoration(
-                    hintText: 'Enter your title ', labelText: 'title'),
+                    hintText: 'Enter your title ', labelText: 'Title'),
               ),
               TextField(
                 controller: amountController,
                 keyboardType: TextInputType.number,
                 onSubmitted: (_) => onSubmitied(),
                 decoration: InputDecoration(
-                    hintText: 'Enter your amount ', labelText: 'amount'),
+                    hintText: 'Enter your amount ', labelText: 'Amount'),
               ),
               FlatButton(
                   onPressed: () {
@@ -59,7 +60,7 @@ class _NewTransactionState extends State<NewTransaction> {
                   //     titleController.text),
                   child: Text(
                     "Submit",
-                    style: TextStyle(color: Colors.purple),
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                   ))
             ],
           ),

@@ -1,9 +1,10 @@
-import 'file:///C:/Users/ahmed/.vscode/expenses_app/test/user_transaction.dart';
+import './widgets/chart.dart';
 import 'package:flutter/material.dart';
 import './widgets/transactionsList.dart';
 import 'package:intl/intl.dart';
 import './models/transactions.dart';
 import './widgets/new_transaction.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,8 +18,25 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Colors.accents[200],
-        primarySwatch: Colors.amber,
+        appBarTheme: AppBarTheme(
+            textTheme: TextTheme(
+                headline6: TextStyle(
+                    fontFamily: GoogleFonts.acme().toString(),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.white)
+                // TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     fontFamily:
+                //         GoogleFonts.openSans(fontWeight: FontWeight.bold)
+                //             .toString())
+                )),
+        textTheme: TextTheme(
+            headline6:
+                TextStyle(fontFamily: GoogleFonts.openSans().toString())),
+        fontFamily: GoogleFonts.lato().toString(),
+        primaryColor: Colors.purple,
+        primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(),
@@ -33,18 +51,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Transaction> _transactions = [
-    Transaction(
-        id: DateTime.now().toString(),
-        amount: 88,
-        date: DateTime.now(),
-        title: 'tx no 1 : fuel'),
-    Transaction(
-        id: DateTime.now().toString(),
-        amount: 82,
-        date: DateTime.now(),
-        title: 'tx no 3 : gaz')
+  List<Transaction> transactions = [
+    // Transaction(
+    //     id: DateTime.now().toString(),
+    //     amount: 88,
+    //     date: DateTime.now(),
+    //     title: 'tx no 1 : fuel'),
+    // Transaction(
+    //     id: DateTime.now().toString(),
+    //     amount: 82,
+    //     date: DateTime.now(),
+    //     title: 'tx no 3 : gaz')
   ];
+  List<Transaction> get _recentTransaction {
+    return transactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   void newTrx(String txtitle, double txamount) {
     final newtx = Transaction(
         id: DateTime.now().toString(),
@@ -53,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         date: DateTime.now());
     print(newtx);
     setState(() {
-      _transactions.add(newtx);
+      transactions.add(newtx);
     });
   }
 
@@ -75,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        textTheme: Theme.of(context).appBarTheme.textTheme,
         actions: [
           IconButton(
               icon: Icon(Icons.playlist_add),
@@ -82,9 +107,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 startNewTransaction(context);
               })
         ],
-        title: Text('Expenses App'),
+        title: Text(
+          'Expenses App',
+          style: Theme.of(context).appBarTheme.textTheme.headline6,
+        ),
         centerTitle: true,
-        backgroundColor: Color(0XFFE91E63),
+        //Color(0XFFE91E63)
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       backgroundColor: Color(0XFFF8BBD0),
       body: ListView(
@@ -95,15 +124,22 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Card(
-                child: Text(
-                  'The expenses chart !',
-                  style: TextStyle(color: Colors.black),
+                child: Column(
+                  children: [
+                    Text(
+                      'The expenses chart !',
+                      style: Theme.of(context).textTheme.headline6,
+                      //  GoogleFonts.openSans(fontWeight: FontWeight.bold)
+                      //TextStyle(color: Colors.black),
+                    ),
+                    Chart(recentTransaction: _recentTransaction)
+                  ],
                 ),
                 elevation: 5,
               ),
               Divider(color: Colors.pink),
               TransactionList(
-                transactions: _transactions,
+                transactions: transactions,
               )
               // Center(
               //   child:
