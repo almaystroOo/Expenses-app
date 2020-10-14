@@ -31,7 +31,11 @@ class MyApp extends StatelessWidget {
                 //         GoogleFonts.openSans(fontWeight: FontWeight.bold)
                 //             .toString())
                 )),
-        textTheme: TextTheme(
+        textTheme: ThemeData.light().textTheme.copyWith(
+            button: TextStyle(
+                //backgroundColor: Colors.purple,
+                fontFamily: GoogleFonts.openSans().toString(),
+                color: Colors.white),
             headline6:
                 TextStyle(fontFamily: GoogleFonts.openSans().toString())),
         fontFamily: GoogleFonts.lato().toString(),
@@ -69,15 +73,22 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void newTrx(String txtitle, double txamount) {
+  void newTrx(String txtitle, double txamount, DateTime txDate) {
     final newtx = Transaction(
         id: DateTime.now().toString(),
         title: txtitle,
         amount: txamount,
-        date: DateTime.now());
+        date: txDate);
     print(newtx);
     setState(() {
       transactions.add(newtx);
+    });
+  }
+
+  int _selctedIndex;
+  void deleteTrx(int _selctedIndex) {
+    setState(() {
+      transactions.removeAt(_selctedIndex);
     });
   }
 
@@ -91,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (_) {
           return NewTransaction(
             newTrx: newTrx,
+            //deleteTrx: deleteTrx,
           );
         });
   }
@@ -115,7 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
         //Color(0XFFE91E63)
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      backgroundColor: Color(0XFFF8BBD0),
+      backgroundColor: Colors.white,
+      // Color(0XFFF8BBD0),
       body: ListView(
         children: <Widget>[
           // Text("fuck you son of bitch"),
@@ -123,23 +136,27 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Card(
+              Container(
                 child: Column(
                   children: [
-                    Text(
-                      'The expenses chart !',
-                      style: Theme.of(context).textTheme.headline6,
-                      //  GoogleFonts.openSans(fontWeight: FontWeight.bold)
-                      //TextStyle(color: Colors.black),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        'The expenses chart !',
+                        style: Theme.of(context).textTheme.headline6,
+                        //  GoogleFonts.openSans(fontWeight: FontWeight.bold)
+                        //TextStyle(color: Colors.black),
+                      ),
                     ),
                     Chart(recentTransaction: _recentTransaction)
                   ],
                 ),
-                elevation: 5,
+                // elevation: 5,
               ),
               Divider(color: Colors.pink),
               TransactionList(
                 transactions: transactions,
+                deleteTrx: deleteTrx,
               )
               // Center(
               //   child:
@@ -148,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: IconButton(

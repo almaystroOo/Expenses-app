@@ -26,7 +26,7 @@ class Chart extends StatelessWidget {
         'amount': totSum,
         //'percentage': (totSum / recentTransaction.length) * 100
       };
-    });
+    }).reversed.toList();
   }
 
   double get percentageAmount {
@@ -35,12 +35,17 @@ class Chart extends StatelessWidget {
   }
 
   // double get percentage {
+  //   var amount = groupOfTransacrion.map((e) => print(e['amount']));
+  //   return ((amount as double) / percentageAmount) * 100;
+  // }
+  // double get percentage {
   //   return percentageAmount / groupOfTransacrion.length * 100;
   // }
 
   @override
   Widget build(BuildContext context) {
-    print(groupOfTransacrion);
+    //print(percentage.toString());
+    //print(groupOfTransacrion.map((e) => print(e['amount'])));
     return Container(
         child: Card(
       elevation: 6,
@@ -60,7 +65,7 @@ class Chart extends StatelessWidget {
                     data['amount'],
                     percentageAmount == 0.0
                         ? 0.0
-                        : (data['amount'] as double) / percentageAmount * 100),
+                        : ((data['amount'] as double) / percentageAmount)),
               );
             }).toList()
             // : [Text(' no charts to be shown !')]
