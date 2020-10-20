@@ -10,61 +10,59 @@ class TransactionList extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 450,
-      child: transactions.isEmpty
-          ? Column(
-              children: [
-                Center(
-                    child: Text(
-                  'The List is Empty !',
-                  style: Theme.of(context).textTheme.bodyText1,
-                )),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                    height: 200.0,
-                    child: Image.asset(
-                      'assets/waiting.png',
-                    ))
-              ],
-            )
-          : ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                return Card(
-                    elevation: 6,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                                '\$${transactions[index].amount.toStringAsFixed(2)}'),
-                          ),
+    return transactions.isEmpty
+        ? Column(
+            children: [
+              Center(
+                  child: Text(
+                'The List is Empty !',
+                style: Theme.of(context).textTheme.bodyText1,
+              )),
+              SizedBox(
+                height: 10.0,
+              ),
+              Container(
+                  height: 200.0,
+                  child: Image.asset(
+                    'assets/waiting.png',
+                  ))
+            ],
+          )
+        : ListView.builder(
+            //shrinkWrap: true,
+            itemCount: transactions.length,
+            itemBuilder: (context, index) {
+              return Card(
+                  elevation: 6,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                              '\$${transactions[index].amount.toStringAsFixed(2)}'),
                         ),
                       ),
-                      title: Text('${transactions[index].title}'),
-                      subtitle: Text(
-                          DateFormat.yMMMMd().format(transactions[index].date)),
-                      trailing: IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
-                          onPressed: () {
-                            deleteTrx(index);
-                          }),
-                    ));
-              }
+                    ),
+                    title: Text('${transactions[index].title}'),
+                    subtitle: Text(
+                        DateFormat.yMMMMd().format(transactions[index].date)),
+                    trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          deleteTrx(index);
+                        }),
+                  ));
+            }
 //
-              // children: transactions.map((tx) {
-              //  ).toList(),
-              ),
-    );
+            // children: transactions.map((tx) {
+            //  ).toList(),
+            );
   }
 }
 // //Row(
